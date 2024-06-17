@@ -1,6 +1,6 @@
 package davukx.gamification.game.badgeProcessors;
 
-import davukx.gamification.challenge.ChallengeSolvedDTO;
+import davukx.gamification.challenge.ChallengeSolvedEvent;
 import davukx.gamification.game.domain.BadgeType;
 import davukx.gamification.game.domain.ScoreCard;
 
@@ -17,7 +17,7 @@ public interface BadgeProcessor {
      */
     Optional<BadgeType> processForOptionalBadge(int currentScore,
                                                 List<ScoreCard> scoreCardList,
-                                                ChallengeSolvedDTO solved);
+                                                ChallengeSolvedEvent solved);
 
     /**
      * @return the BadgeType object that this processor is handling. You can use

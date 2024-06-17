@@ -1,29 +1,32 @@
 package davukx.gamification.game;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import davukx.gamification.challenge.ChallengeSolvedDTO;
+import davukx.gamification.challenge.ChallengeSolvedEvent;
 import davukx.gamification.game.badgeProcessors.BadgeProcessor;
 import davukx.gamification.game.domain.BadgeCard;
 import davukx.gamification.game.domain.BadgeType;
 import davukx.gamification.game.domain.ScoreCard;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class GameServiceImpl implements GameService{
+class GameServiceImpl implements GameService {
+
     private final ScoreRepository scoreRepository;
     private final BadgeRepository badgeRepository;
     private final List<BadgeProcessor> badgeProcessors;
+
     @Override
-    public GameResult newAttemptForUser(ChallengeSolvedDTO challenge) {
+    @Transactional
+    public GameResult newAttemptForUser(final ChallengeSolvedEvent challenge) {
         if (challenge.isCorrect()) {
             ScoreCard scoreCard = new ScoreCard(challenge.getUserId(),
                     challenge.getAttemptId());
@@ -45,7 +48,7 @@ public class GameServiceImpl implements GameService{
     }
 
     private List<BadgeCard> processForBadges(
-            final ChallengeSolvedDTO solvedChallenge) {
+            final ChallengeSolvedEvent solvedChallenge) {
         Optional<Integer> optTotalScore = scoreRepository.
                 getTotalScoreForUser(solvedChallenge.getUserId());
         if (optTotalScore.isEmpty()) return Collections.emptyList();
@@ -65,7 +68,7 @@ public class GameServiceImpl implements GameService{
                         scoreCardList, solvedChallenge)
                 ).flatMap(Optional::stream)
                 .map(badgeType ->
-                        new BadgeCard(solvedChallenge.getUserId(), (BadgeType) badgeType)
+                        new BadgeCard(solvedChallenge.getUserId(), badgeType)
                 )
                 .collect(Collectors.toList());
 

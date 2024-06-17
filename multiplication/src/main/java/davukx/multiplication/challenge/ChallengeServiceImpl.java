@@ -2,8 +2,8 @@ package davukx.multiplication.challenge;
 
 import davukx.multiplication.user.User;
 import davukx.multiplication.user.UserRepository;
-import davukx.multiplication.serviceClients.GamificationServiceClient;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,9 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     private final UserRepository userRepository;
     private final ChallengeAttemptRepository attemptRepository;
-    private final GamificationServiceClient gameClient;
+    private final ChallengeEventPub challengeEventPub;
 
+    @Transactional
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
         User user = userRepository.findByAlias(attemptDTO.getUserAlias())
@@ -42,8 +43,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         );
 
         attemptRepository.save(checkedAttempt);
-        boolean status = gameClient.sendAttempt(checkedAttempt);
-        log.info("Gamification service response: {}", status);
+        challengeEventPub.challengeSolved(checkedAttempt);
         return checkedAttempt;
     }
 

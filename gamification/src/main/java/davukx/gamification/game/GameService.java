@@ -1,7 +1,7 @@
 package davukx.gamification.game;
 
 import lombok.Value;
-import davukx.gamification.challenge.ChallengeSolvedDTO;
+import davukx.gamification.challenge.ChallengeSolvedEvent;
 import davukx.gamification.game.domain.BadgeType;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface GameService {
      * @param challenge the challenge data with user details, factors, etc.
      * @return a {@link GameResult} object containing the new score and badge cards obtained
      */
-    GameResult newAttemptForUser(ChallengeSolvedDTO challenge);
+    GameResult newAttemptForUser(final ChallengeSolvedEvent challenge);
 
     @Value
     class GameResult {

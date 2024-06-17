@@ -1,6 +1,6 @@
 package davukx.gamification.game.badgeProcessors;
 
-import davukx.gamification.challenge.ChallengeSolvedDTO;
+import davukx.gamification.challenge.ChallengeSolvedEvent;
 import davukx.gamification.game.domain.BadgeType;
 import davukx.gamification.game.domain.ScoreCard;
 
@@ -11,7 +11,7 @@ public class SilverBadgeProcessor implements BadgeProcessor{
     @Override
     public Optional<BadgeType> processForOptionalBadge(int currentScore,
                                                        List<ScoreCard> scoreCardList,
-                                                       ChallengeSolvedDTO solved) {
+                                                       ChallengeSolvedEvent solved) {
         return currentScore > 150 ?
                 Optional.of(BadgeType.SILVER) :
                 Optional.empty();

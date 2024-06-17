@@ -1,6 +1,6 @@
 package davukx.gamification.game.badgeProcessors;
 
-import davukx.gamification.challenge.ChallengeSolvedDTO;
+import davukx.gamification.challenge.ChallengeSolvedEvent;
 import davukx.gamification.game.domain.BadgeType;
 import davukx.gamification.game.domain.ScoreCard;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ class BronzeBadgeProcessor implements BadgeProcessor {
     @Override
     public Optional<BadgeType> processForOptionalBadge(int currentScore,
                                                        List<ScoreCard> scoreCardList,
-                                                       ChallengeSolvedDTO solved) {
+                                                       ChallengeSolvedEvent solved) {
         return currentScore > 50 ?
                 Optional.of(BadgeType.BRONZE) :
                 Optional.empty();
