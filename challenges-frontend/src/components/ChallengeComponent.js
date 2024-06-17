@@ -1,6 +1,7 @@
 import * as React from "react";
 import ChallengeApiClient from "../services/ChallengeApiClient";
 import LastAttemptsComponent from "./LastAttemptsComponent";
+import LeaderBoardComponent from "./LeaderBoardComponent";
 class ChallengeComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -121,6 +122,7 @@ class ChallengeComponent extends React.Component {
                 {this.state.lastAttempts.length > 0 &&
                     <LastAttemptsComponent lastAttempts={this.state.lastAttempts}/>
                 }
+                <LeaderBoardComponent/>
             </div>
         );
     }
